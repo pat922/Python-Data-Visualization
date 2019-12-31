@@ -1,3 +1,10 @@
+plt.plot - plotting line chart similarly 
+plot.xlabel, plot.ylabel - labelling x and y axis respectively
+plt.xticks, plt.yticks - labelling x and y axis observation tick points respectively
+plt.legend() - signifying observation variables
+plt.title() - set title of the plot
+plt.show() - displaying the plot
+
 plt.plot(sample_data.column_a, sample_data.column_b)
 plt.show()
 
