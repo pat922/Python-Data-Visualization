@@ -1,0 +1,45 @@
+import pandas
+from matplotlib import pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt 
+
+df = pandas.read_csv('./testing2.csv',sep=',')
+df
+
+#filter out rows of users that purchased filler treatment
+dataset = df[['Name','Group','Date']]
+dataset.head()
+filler_users = df.loc[df['Group']=='FILLER INJECT',['Name','Group','Date']]
+filler_users.head()
+
+#all users that have purchased filler and other treatments
+a = filler_users['Name']
+result1 = dataset[dataset['Name'].isin(list(a.values))]
+result1.head()
+
+#count total number of other treatment group (except filler) purchased by these users
+count = result1.groupby(['Group']).size().head() 
+count = count.sort_values(ascending = False).head()
+print (count)
+count.shape
+
+#count Percentage of customers that their first time purchase (FTP) is filler 
+df2 = result1.groupby('Name').first().head()
+count = count.sort_values(ascending = False).head()
+print (count)
+count.shape
+df2.loc[df2['Group'] != 'FILLER INJECT']
+count2 = df2.groupby(['Group']).size().head(50) 
+print(count2) 
+
+#date of first time purchase merge with date of first purchased filler
+result4 = pandas.merge(filler_users,df2[['Group','Date']],on='Group')
+
+df = df.loc[:, ~df.columns.str.contains('^Unnamed')] -- to remove unnamed cols
+export_csv = df.to_csv(r'/usr/local/bin/FTPnotfillerLatest.csv') -- to export csv file 
+
+#Bar Chart1
+df = pandas.DataFrame({'Treatment':['MEDICATION', 'BTA', 'FACIAL'], 'Customer Name':[45, 31, 29]})
+ax = df.plot.bar(x='Treatment', y='Customer Name', rot=0)
+print(df)
+
